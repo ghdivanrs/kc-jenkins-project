@@ -13,10 +13,11 @@ pipeline {
                 sh 'java --version'
             }
         }
+        /*
         stage('Is there any python?') {
             steps {
                 sh 'python --version'
             }
-        }
+        }*/
     }
 }
