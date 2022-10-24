@@ -20,6 +20,7 @@ pipeline {
             steps {
                 dir('python-example-app') {
                     sh 'pip install -r requirements.txt'
+                    echo "${DO_COVERAGE}"
                 }
             }
         }
@@ -34,7 +35,7 @@ pipeline {
             when {
                 allOf {
                     expression {
-                        return params.DO_COVERAGE
+                        return params.DO_COVERAGE == 'true'
                     }
                     branch 'master'
                 }
