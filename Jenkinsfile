@@ -5,8 +5,15 @@ pipeline {
     environment {
         PYPI_CREDENTIALS = credentials('pypi-credentials')
     }
+    /*
     triggers {
         cron('*/2 * * * *')
+    }*/
+    options { 
+        disableConcurrentBuilds()
+        ansiColor('xterm')
+        timeout(time: 5, unit: 'MINUTES')
+        timestamps()
     }
     stages {
         stage('Build') {
