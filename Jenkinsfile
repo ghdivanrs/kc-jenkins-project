@@ -4,6 +4,7 @@ pipeline {
     }
     environment {
         PYPI_CREDENTIALS = credentials('pypi-credentials')
+        DO_COVERAGE = "${BUILD_NUMBER.toInteger() % 2 == 0 ? true : false}"
     }
     //triggers {
     //    cron('*/2 * * * *')
@@ -30,6 +31,14 @@ pipeline {
             }
         }
         stage('Coverage') {
+            when {
+                allOf {
+                    expression {
+                        return params.DO_COVERAGE
+                    }
+                    branch 'main'
+                }
+            }
             steps {
                 dir('python-example-app') {
                     sh 'python -m coverage report -m --fail-under=90'
@@ -44,9 +53,13 @@ pipeline {
             }
         }
         stage('Publish') {
+            /*
             input {
               message "Do you want to continue: "
               ok "Yes, continue the pipeline"
+            }*/
+            when {
+                branch 'main'
             }
             steps {
                 dir('python-example-app') {
