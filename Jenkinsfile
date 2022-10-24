@@ -35,7 +35,7 @@ pipeline {
             when {
                 allOf {
                     expression {
-                        environment name: 'DO_COVERAGE', value: 'true'
+                       env.DO_COVERAGE == "true"
                     }
                     branch 'master'
                 }
