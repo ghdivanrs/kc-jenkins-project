@@ -45,6 +45,10 @@ pipeline {
         }
         stage('Publish') {
             steps {
+                input {
+                  message "Do you want to continue: "
+                  ok "Yes, continue the pipeline"
+                }
                 dir('python-example-app') {
                     sh 'python -m twine upload dist/* --skip-existing -u $PYPI_CREDENTIALS_USR -p $PYPI_CREDENTIALS_PSW'
                     //sh 'python -m twine upload dist/* --skip-existing --config-file ~/.pypirc'
