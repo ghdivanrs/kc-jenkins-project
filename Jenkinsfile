@@ -2,20 +2,44 @@ pipeline {
     agent {
         label('python')
     }
+    environment {
+        PYPI_CREDENTIALS = credentials('pypi-credentials')
+    }
     stages {
-        stage('Test') {
+        stage('Build') {
             steps {
-                sh 'echo hola'
+                dir('python-example-app') {
+                    sh 'pip install -r requirements.txt'
+                }
             }
         }
-        stage('Is there any java?') {
+        stage('Unit Test') {
             steps {
-                sh 'java --version'
+                dir('python-example-app') {
+                    sh 'python -m coverage run -m pytest -s -v'
+                }
             }
         }
-        stage('Is there any python?') {
+        stage('Coverage') {
             steps {
-                sh 'python --version'
+                dir('python-example-app') {
+                    sh 'python -m coverage report -m --fail-under=90'
+                }
+            }
+        }
+        stage('Package') {
+            steps {
+                dir('python-example-app') {
+                    sh 'python -m build'
+                }
+            }
+        }
+        stage('Publish') {
+            steps {
+                dir('python-example-app') {
+                    //sh 'python -m twine upload dist/* --skip-existing -u $PYPI_CREDENTIALS_USR -p $PYPI_CREDENTIALS_PSW'
+                    sh 'python -m twine upload dist/* --skip-existing --config-file ~/.pypirc'
+                }
             }
         }
     }
