@@ -5,9 +5,9 @@ pipeline {
     environment {
         PYPI_CREDENTIALS = credentials('pypi-credentials')
     }
-    triggers {
-        //cron('*/2 * * * *')
-    }
+    //triggers {
+    //    cron('*/2 * * * *')
+    //}
     options { 
         disableConcurrentBuilds()
         ansiColor('xterm')
