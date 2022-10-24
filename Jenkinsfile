@@ -43,4 +43,15 @@ pipeline {
             }
         }
     }
+    post {
+        failure {
+            echo "Your pipeline has failed, contact with your administrator"
+        }
+        success {
+            echo "The deployment was done successfully"
+        }
+        always {
+            echo "I hope you like Jenkins"
+        }
+    }
 }
