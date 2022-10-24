@@ -36,7 +36,7 @@ pipeline {
                     expression {
                         return params.DO_COVERAGE
                     }
-                    branch 'main'
+                    branch 'master'
                 }
             }
             steps {
@@ -59,7 +59,7 @@ pipeline {
               ok "Yes, continue the pipeline"
             }*/
             when {
-                branch 'main'
+                branch 'master'
             }
             steps {
                 dir('python-example-app') {
