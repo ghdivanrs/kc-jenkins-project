@@ -6,6 +6,9 @@ pipeline {
         PYPI_CREDENTIALS = credentials('pypi-credentials')
         DO_COVERAGE = "${BUILD_NUMBER.toInteger() % 2 == 0 ? true : false}"
     }
+    parameters {
+        booleanParam(name: 'PUBLISH', defaultValue: true, description: 'Whether you want to publish or not')
+    }
     //triggers {
     //    cron('*/2 * * * *')
     //}
@@ -60,7 +63,12 @@ pipeline {
               ok "Yes, continue the pipeline"
             }*/
             when {
-                branch 'master'
+                allOf {
+                    expression {
+                        return params.PUBLISH
+                    }
+                    branch 'master'
+                }
             }
             steps {
                 dir('python-example-app') {
