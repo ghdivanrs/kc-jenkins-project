@@ -1,0 +1,18 @@
+pipeline {
+    agent {
+        label('node')
+    }
+    stages {
+        stage('Execute node script') {
+            steps {
+                sh 'node --version'
+                sh 'cd node-test && node test.js'
+            }
+        }
+        stage('Call Another Job') {
+            steps {
+                build wait: true, job:'Jobs/Freestyle Example'
+            }
+        }
+    }
+}
