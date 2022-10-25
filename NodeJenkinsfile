@@ -9,5 +9,10 @@ pipeline {
                 sh 'cd node-test && node test.js'
             }
         }
+        stage('Call Another Job') {
+            steps {
+                build wait: true, job:'Jobs/Freestyle Example'
+            }
+        }
     }
 }
